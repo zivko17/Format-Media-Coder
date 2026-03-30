@@ -1,4 +1,4 @@
-# 🎬 FFmpeg GUI
+# 🎬 Format Media Coder
 
 App de escritorio para FFmpeg — Electron + React + Vite + Tailwind.
 
