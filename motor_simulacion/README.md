@@ -7,7 +7,22 @@ de neumático, reglas de puntos y formato del fin de semana). Esto es la base de
 objetivo a largo plazo: un "Football Manager del automovilismo" con progresión
 de carrera y múltiples categorías.
 
-## Estado: Fase 1 (motor de ritmo) — COMPLETADA
+## Estado: Fases 1 y 2 — COMPLETADAS
+
+- **Fase 1**: modelo de ritmo (piloto+coche), degradación de neumáticos,
+  combustible y ruido gaussiano; bucle de carrera; validación Monte Carlo.
+- **Fase 2**: incidentes/errores (según agresividad y clima), fallos mecánicos
+  y DNFs, safety car / VSC (con agrupamiento del pelotón), estrategia de paradas
+  por umbral de degradación, y adelantamientos probabilísticos con riesgo de
+  contacto. Todo **categoría-aware**: el tipo de trazado influye (adelantar en
+  óvalo es fácil; en circuito urbano, difícil).
+
+Además, el motor es ya **multi-categoría**: `categorias/catalogo.py` define F1,
+F2, F3, F4, karting, IndyCar, Indy NXT, Fórmula E, WEC, IMSA, GT3, DTM, WTCR y
+NASCAR (Cup/Xfinity/Trucks), organizadas por *familias* y con su *escalera de
+ascensos* (`asciende_a`), base del futuro modo carrera.
+
+### Detalle Fase 1 (motor de ritmo)
 
 Implementado:
 
@@ -43,10 +58,19 @@ Desde la raíz del repo:
 ```bash
 # Validación Monte Carlo (100 carreras, 30 vueltas por defecto)
 python3 -m scripts.prueba_montecarlo
-
-# Más simulaciones / otras vueltas
 python3 -m scripts.prueba_montecarlo --simulaciones 500 --vueltas 30
+
+# Demo narrada de UNA carrera con eventos (Fase 2), elige categoría/clima
+python3 -m scripts.demo_carrera --categoria f1 --semilla 7
+python3 -m scripts.demo_carrera --categoria f1 --clima lluvia --semilla 2
+python3 -m scripts.demo_carrera --categoria nascar_cup --vueltas 60 --semilla 5
 ```
+
+`demo_carrera` muestra parrilla de salida, eventos vuelta a vuelta (safety car,
+paradas, incidentes, adelantamientos, abandonos) y clasificación final. Con la
+Fase 2 activa, la validación Monte Carlo pasa de casi determinista a mostrar
+verdadera variabilidad: el mejor sigue ganando más (~34%) pero cualquiera puede
+ganar un día y el líder puede irse al fondo por un DNF.
 
 Deberías ver una tabla con la posición media, mejor/peor resultado y % de
 victorias por piloto. Resultado esperado: el equipo puntero domina y su mejor

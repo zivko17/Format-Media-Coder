@@ -3,15 +3,17 @@ Modelo de tiempo de vuelta.
 
 Combina los términos de la fórmula acordada:
 
-    tiempo_vuelta = tiempo_base_circuito
+    tiempo_vuelta = tiempo_base_categoria
                   + penalizacion_ritmo      (habilidad + rendimiento del coche)
                   + degradacion_neumaticos   (no lineal según vueltas de stint)
                   + efecto_combustible        (decrece según avanza la carrera)
-                  + penalizacion_grip         (clima; Fase 1 = 0)
+                  + penalizacion_grip         (clima: seco/lluvia)
                   + ruido_gaussiano           (sigma depende de la consistencia)
 
-La función es pura respecto al azar: recibe un `random.Random` (rng) para que
-la validación Monte Carlo sea reproducible fijando la semilla.
+Los parámetros de ajuste (tiempo base, rango de ritmo, sigma, combustible,
+pesos piloto/coche) vienen de la `Categoria`, de modo que el MISMO motor sirve
+para F1, IndyCar, WEC, GT3, etc. La función es pura respecto al azar: recibe un
+`random.Random` (rng) para que la validación Monte Carlo sea reproducible.
 """
 
 from __future__ import annotations
@@ -19,19 +21,18 @@ from __future__ import annotations
 import random
 from typing import TYPE_CHECKING
 
-from . import config
-
 if TYPE_CHECKING:  # solo para type hints, evita imports en tiempo de ejecución
     from .modelos.piloto import Piloto
     from .modelos.coche import Coche
     from .modelos.neumaticos import Neumatico
     from .modelos.clima import Clima
+    from .categorias.categoria import Categoria
 
 
-def penalizacion_ritmo(piloto: "Piloto", coche: "Coche") -> float:
+def penalizacion_ritmo(piloto: "Piloto", coche: "Coche", categoria: "Categoria") -> float:
     """Convierte habilidad + rendimiento (0-100) en segundos de penalización."""
-    ritmo = config.PESO_PILOTO * piloto.habilidad + config.PESO_COCHE * coche.rendimiento_base
-    return (100.0 - ritmo) / 100.0 * config.RANGO_PACE
+    ritmo = categoria.peso_piloto * piloto.habilidad + categoria.peso_coche * coche.rendimiento_base
+    return (100.0 - ritmo) / 100.0 * categoria.rango_pace
 
 
 def factor_cuidado_neumatico(piloto: "Piloto", coche: "Coche") -> float:
@@ -49,14 +50,20 @@ def factor_cuidado_neumatico(piloto: "Piloto", coche: "Coche") -> float:
     return factor_piloto * factor_coche
 
 
-def sigma_ruido(piloto: "Piloto") -> float:
-    """Desviación típica del ruido por vuelta según la consistencia del piloto."""
-    return config.SIGMA_MAX * (1.0 - piloto.consistencia / 100.0)
+def sigma_ruido(piloto: "Piloto", categoria: "Categoria", clima: "Clima") -> float:
+    """
+    Desviación típica del ruido por vuelta.
+
+    Depende de la consistencia del piloto y, en mojado, aumenta según lo mal
+    que se adapte a la lluvia (adaptacion_lluvia baja -> más varianza).
+    """
+    base = categoria.sigma_max * (1.0 - piloto.consistencia / 100.0)
+    return base * clima.multiplicador_error(piloto)
 
 
-def efecto_combustible(vueltas_restantes: int) -> float:
+def efecto_combustible(vueltas_restantes: int, categoria: "Categoria") -> float:
     """Penalización por peso de combustible. Decrece hasta 0 al final."""
-    return config.GANANCIA_COMBUSTIBLE * vueltas_restantes
+    return categoria.ganancia_combustible * vueltas_restantes
 
 
 def calcular_tiempo_vuelta(
@@ -66,6 +73,7 @@ def calcular_tiempo_vuelta(
     vueltas_stint: int,
     vueltas_restantes: int,
     clima: "Clima",
+    categoria: "Categoria",
     rng: random.Random,
 ) -> float:
     """
@@ -77,12 +85,12 @@ def calcular_tiempo_vuelta(
     factor = factor_cuidado_neumatico(piloto, coche)
 
     tiempo = (
-        config.TIEMPO_BASE_CIRCUITO
-        + penalizacion_ritmo(piloto, coche)
+        categoria.tiempo_base
+        + penalizacion_ritmo(piloto, coche, categoria)
         + neumatico.offset_ritmo
         + neumatico.degradacion(vueltas_stint, factor)
-        + efecto_combustible(vueltas_restantes)
-        + clima.penalizacion_grip()
-        + rng.gauss(0.0, sigma_ruido(piloto))
+        + efecto_combustible(vueltas_restantes, categoria)
+        + clima.penalizacion_grip(piloto)
+        + rng.gauss(0.0, sigma_ruido(piloto, categoria, clima))
     )
     return tiempo
