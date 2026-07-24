@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- WPF ⇒ solo compila en Windows. El núcleo (Core) y sus tests son
+         multiplataforma y sí se compilan en cualquier sitio. -->
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ApplicationIcon>..\..\build\icon.ico</ApplicationIcon>
+    <AssemblyName>FormatMediaCoder</AssemblyName>
+    <Version>2.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FormatMediaCoder.Core\FormatMediaCoder.Core.csproj" />
+  </ItemGroup>
+
+</Project>

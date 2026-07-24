@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <!-- Núcleo de lógica pura y multiplataforma: sin dependencias de UI ni de FFmpeg.
+         Se compila y se testea igual en Windows, Linux o Mac. Es la pieza que
+         justifica el producto (brief §7) y la única que es lógica pura (§4.2). -->
+  </PropertyGroup>
+
+</Project>
