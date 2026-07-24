@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0e14">
+  <title>Simulador de Carreras</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%8F%81%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="cabecera">
+    <h1>🏁 Simulador de Carreras</h1>
+    <span id="estado-api" class="estado-api" title="Estado de la API">●</span>
+  </header>
+
+  <!-- Panel de configuración de la carrera -->
+  <form id="config" class="config">
+    <div class="campo">
+      <label for="categoria">Categoría</label>
+      <select id="categoria"></select>
+    </div>
+    <div class="campo campo-corto">
+      <label for="vueltas">Vueltas</label>
+      <input id="vueltas" type="number" min="1" max="500" placeholder="auto">
+    </div>
+    <div class="campo">
+      <label for="clima">Clima</label>
+      <select id="clima">
+        <option value="seco">☀️ Seco</option>
+        <option value="lluvia">🌧️ Lluvia</option>
+      </select>
+    </div>
+    <div class="campo campo-corto">
+      <label for="semilla">Semilla</label>
+      <input id="semilla" type="number" placeholder="azar">
+    </div>
+    <button id="btn-simular" type="submit">Simular</button>
+  </form>
+
+  <main class="escenario">
+    <!-- Pista -->
+    <section class="pista-wrap">
+      <canvas id="pista"></canvas>
+      <div id="banner-evento" class="banner-evento oculto"></div>
+    </section>
+
+    <!-- Panel lateral: clasificación + eventos -->
+    <aside class="panel">
+      <div class="panel-cabecera">
+        <div class="vuelta-info">
+          <span class="etiqueta">Vuelta</span>
+          <span id="vuelta-actual">–</span>
+          <span id="vuelta-total"></span>
+        </div>
+        <div id="bandera" class="bandera bandera-verde">VERDE</div>
+      </div>
+
+      <ol id="clasificacion" class="clasificacion"></ol>
+
+      <div class="eventos-cabecera">Eventos</div>
+      <ul id="eventos" class="eventos"></ul>
+    </aside>
+  </main>
+
+  <!-- Controles de reproducción -->
+  <footer class="controles" id="controles">
+    <button id="btn-play" class="btn-icono" title="Play/Pausa">▶</button>
+    <button id="btn-reinicio" class="btn-icono" title="Reiniciar">⟲</button>
+    <input id="scrubber" class="scrubber" type="range" min="0" max="0" value="0" step="0.01">
+    <label class="velocidad">
+      Velocidad
+      <input id="velocidad" type="range" min="0.5" max="8" value="2" step="0.5">
+      <span id="velocidad-val">2×</span>
+    </label>
+  </footer>
+
+  <div id="cargando" class="cargando oculto">Simulando carrera…</div>
+
+  <script src="visualizador.js"></script>
+</body>
+</html>

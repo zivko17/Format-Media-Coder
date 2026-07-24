@@ -1,0 +1,17 @@
+{
+  "name": "Simulador de Carreras",
+  "short_name": "Carreras",
+  "description": "Simulador de automovilismo multi-categoría",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b0e14",
+  "theme_color": "#0b0e14",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%230b0e14'/%3E%3Ctext x='96' y='130' font-size='120' text-anchor='middle'%3E%F0%9F%8F%81%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}

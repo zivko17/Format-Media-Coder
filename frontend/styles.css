@@ -1,0 +1,208 @@
+/* ============================================================================
+   Simulador de Carreras — estilos mobile-first.
+   Diseño pensado para móvil (apila en vertical) y que crece a escritorio
+   (pista + panel en dos columnas). Tema oscuro tipo telemetría.
+   ============================================================================ */
+
+:root {
+  --fondo: #0b0e14;
+  --fondo-2: #141926;
+  --fondo-3: #1c2333;
+  --borde: #2a3346;
+  --texto: #e6ebf5;
+  --texto-tenue: #8b97ad;
+  --acento: #ff2d55;
+  --verde: #22c55e;
+  --amarillo: #f5c518;
+  --naranja: #f59e0b;
+  --azul: #3b82f6;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* ----- Cabecera ----- */
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1rem;
+  background: var(--fondo-2);
+  border-bottom: 1px solid var(--borde);
+}
+.cabecera h1 { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.3px; }
+.estado-api { font-size: 1.2rem; color: var(--texto-tenue); }
+.estado-api.ok { color: var(--verde); }
+.estado-api.error { color: var(--acento); }
+
+/* ----- Configuración ----- */
+.config {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.8rem 1rem;
+  background: var(--fondo-2);
+  border-bottom: 1px solid var(--borde);
+  align-items: flex-end;
+}
+.campo { display: flex; flex-direction: column; gap: 0.25rem; flex: 1 1 130px; }
+.campo-corto { flex: 0 1 90px; }
+.campo label { font-size: 0.72rem; color: var(--texto-tenue); text-transform: uppercase; letter-spacing: 0.5px; }
+.config select, .config input {
+  background: var(--fondo-3);
+  border: 1px solid var(--borde);
+  color: var(--texto);
+  border-radius: 8px;
+  padding: 0.55rem 0.6rem;
+  font-size: 0.9rem;
+  width: 100%;
+}
+#btn-simular {
+  flex: 1 1 100%;
+  background: var(--acento);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+#btn-simular:active { transform: scale(0.98); }
+#btn-simular:disabled { opacity: 0.5; cursor: default; }
+
+/* ----- Escenario (pista + panel) ----- */
+.escenario {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.pista-wrap {
+  position: relative;
+  background:
+    radial-gradient(circle at 50% 40%, #10141f, #0b0e14 70%);
+  aspect-ratio: 1 / 1;
+  width: 100%;
+}
+#pista { width: 100%; height: 100%; display: block; touch-action: none; }
+
+.banner-evento {
+  position: absolute;
+  top: 0.8rem; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(245, 197, 24, 0.92);
+  color: #1a1200;
+  font-weight: 800;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+}
+
+/* ----- Panel lateral ----- */
+.panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--fondo-2);
+  border-top: 1px solid var(--borde);
+  min-height: 0;
+  max-height: 46vh;
+}
+.panel-cabecera {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--borde);
+}
+.vuelta-info { display: flex; align-items: baseline; gap: 0.35rem; }
+.vuelta-info .etiqueta { font-size: 0.7rem; color: var(--texto-tenue); text-transform: uppercase; }
+#vuelta-actual { font-size: 1.3rem; font-weight: 800; }
+#vuelta-total { color: var(--texto-tenue); font-size: 0.9rem; }
+
+.bandera {
+  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.5px;
+  padding: 0.25rem 0.6rem; border-radius: 6px;
+}
+.bandera-verde { background: rgba(34,197,94,0.15); color: var(--verde); }
+.bandera-sc { background: rgba(245,197,24,0.18); color: var(--amarillo); }
+.bandera-vsc { background: rgba(245,158,11,0.18); color: var(--naranja); }
+
+.clasificacion { list-style: none; overflow-y: auto; flex: 1; padding: 0.3rem 0; }
+.fila {
+  display: grid;
+  grid-template-columns: 1.6rem 0.5rem 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(42,51,70,0.5);
+}
+.fila .pos { font-weight: 800; color: var(--texto-tenue); text-align: right; }
+.fila .color { width: 0.5rem; height: 1.1rem; border-radius: 3px; }
+.fila .nombre { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fila .meta { display: flex; gap: 0.4rem; align-items: center; font-size: 0.72rem; color: var(--texto-tenue); }
+.fila .gap { font-variant-numeric: tabular-nums; }
+.fila .neum { padding: 0.05rem 0.35rem; border-radius: 4px; font-weight: 700; }
+.neum-blando { background: rgba(255,45,85,0.2); color: #ff6b8a; }
+.neum-medio  { background: rgba(245,197,24,0.2); color: var(--amarillo); }
+.neum-duro   { background: rgba(230,235,245,0.15); color: #cdd5e5; }
+.neum-lluvia { background: rgba(59,130,246,0.2); color: #6aa8ff; }
+.fila.dnf { opacity: 0.45; }
+.fila.dnf .nombre { text-decoration: line-through; }
+.fila .parada-badge { color: var(--acento); font-weight: 800; }
+
+.eventos-cabecera {
+  padding: 0.4rem 0.9rem; font-size: 0.7rem; text-transform: uppercase;
+  color: var(--texto-tenue); border-top: 1px solid var(--borde); letter-spacing: 0.5px;
+}
+.eventos { list-style: none; overflow-y: auto; max-height: 8rem; padding: 0.2rem 0.9rem 0.6rem; }
+.eventos li { font-size: 0.8rem; padding: 0.15rem 0; color: var(--texto); }
+.eventos li .v { color: var(--texto-tenue); font-variant-numeric: tabular-nums; margin-right: 0.4rem; }
+
+/* ----- Controles de reproducción ----- */
+.controles {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.6rem 1rem calc(0.6rem + env(safe-area-inset-bottom));
+  background: var(--fondo-2);
+  border-top: 1px solid var(--borde);
+}
+.btn-icono {
+  background: var(--fondo-3); border: 1px solid var(--borde); color: var(--texto);
+  width: 2.6rem; height: 2.6rem; border-radius: 50%; font-size: 1rem; cursor: pointer;
+  flex: none;
+}
+.btn-icono:active { transform: scale(0.94); }
+.scrubber { flex: 1; accent-color: var(--acento); }
+.velocidad { display: flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; color: var(--texto-tenue); }
+.velocidad input { width: 90px; accent-color: var(--acento); }
+
+/* ----- Utilidades ----- */
+.oculto { display: none !important; }
+.cargando {
+  position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(11,14,20,0.8); font-size: 1.1rem; z-index: 10;
+}
+
+/* ----- Escritorio: dos columnas ----- */
+@media (min-width: 820px) {
+  .escenario { flex-direction: row; padding: 1rem; gap: 1rem; }
+  .pista-wrap { flex: 1; aspect-ratio: auto; border-radius: 14px; overflow: hidden; border: 1px solid var(--borde); }
+  .panel { max-height: none; width: 340px; border: 1px solid var(--borde); border-radius: 14px; }
+  .config { padding: 0.9rem 1rem; }
+  #btn-simular { flex: 0 1 130px; }
+}
