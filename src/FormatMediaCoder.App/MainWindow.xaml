@@ -50,6 +50,6 @@
         </Border>
 
         <!-- ── Contenido ── -->
-        <ContentControl x:Name="Content" Grid.Column="1" Margin="0" />
+        <ContentControl x:Name="MainContent" Grid.Column="1" Margin="0" />
     </Grid>
 </Window>

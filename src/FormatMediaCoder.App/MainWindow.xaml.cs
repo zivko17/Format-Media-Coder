@@ -12,12 +12,12 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         // Preparar Evento es la pantalla que se abre al arrancar (brief §6.1).
-        Content.Content = _prepararView;
+        MainContent.Content = _prepararView;
     }
 
     private void NavPreparar_Click(object sender, RoutedEventArgs e)
     {
-        Content.Content = _prepararView;
+        MainContent.Content = _prepararView;
     }
 
     private void NavTool_Click(object sender, RoutedEventArgs e)
@@ -26,6 +26,6 @@ public partial class MainWindow : Window
         // (brief §6.2). El porte de cada una desde la versión anterior es trabajo
         // aparte; de momento se muestra su sitio en el nuevo menú.
         var name = (sender as Button)?.Content?.ToString() ?? "Herramienta";
-        Content.Content = new ToolPlaceholderView(name);
+        MainContent.Content = new ToolPlaceholderView(name);
     }
 }
