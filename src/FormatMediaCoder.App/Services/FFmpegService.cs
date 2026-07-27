@@ -82,6 +82,20 @@ public sealed class FFmpegService
         }
     }
 
+    /// <summary>
+    /// Ejecuta una operación de FFmpeg ya construida (por FfmpegOps). Reporta
+    /// progreso, borra el parcial si falla y extrae el error real.
+    /// </summary>
+    public async Task RunAsync(IReadOnlyList<string> args, string outputPath, double durationSeconds = 0, CancellationToken ct = default)
+    {
+        var (exit, _, stderr) = await RunCaptureAsync(_ffmpeg, args, ct, isEncode: true, durationSeconds);
+        if (exit != 0)
+        {
+            TryDelete(outputPath);
+            throw new InvalidOperationException(ExtractRealError(stderr));
+        }
+    }
+
     public void Cancel()
     {
         try { _active?.Kill(entireProcessTree: true); } catch { /* ya terminó */ }

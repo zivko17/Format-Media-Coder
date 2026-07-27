@@ -22,10 +22,15 @@ public partial class MainWindow : Window
 
     private void NavTool_Click(object sender, RoutedEventArgs e)
     {
-        // Las nueve herramientas del original no se tiran: se reagrupan aquí
-        // (brief §6.2). El porte de cada una desde la versión anterior es trabajo
-        // aparte; de momento se muestra su sitio en el nuevo menú.
+        // Las herramientas del original se reagrupan aquí (brief §6.2). Se van
+        // portando desde la versión anterior; las ya portadas abren su vista real,
+        // el resto muestran de momento su sitio en el nuevo menú.
         var name = (sender as Button)?.Content?.ToString() ?? "Herramienta";
-        MainContent.Content = new ToolPlaceholderView(name);
+        MainContent.Content = name switch
+        {
+            _ when name.Contains("Convertir Vídeo") => new ConvertView(),
+            _ when name.Contains("Analizador") => new AnalizadorView(),
+            _ => new ToolPlaceholderView(name),
+        };
     }
 }
