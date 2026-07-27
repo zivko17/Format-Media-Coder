@@ -24,11 +24,14 @@ public sealed class PrepararEventoViewModel : ObservableObject
         _ffmpeg.Progress += (pct, tm) => { ProgressPercent = pct; ProgressTimemark = tm; };
 
         Profiles = new ObservableCollection<TargetProfile>(_profiles.LoadAll());
-        SelectedProfile = Profiles.FirstOrDefault(p => p.Complete);
 
+        // Los comandos se crean ANTES de tocar SelectedProfile: su setter llama a
+        // ScanCommand.RaiseCanExecuteChanged(), así que el comando debe existir ya.
         ScanCommand = new RelayCommand(async () => await ScanAsync(), () => !string.IsNullOrEmpty(InputFolder) && SelectedProfile is not null && !IsBusy);
         ExecuteCommand = new RelayCommand(async () => await ExecuteAsync(), () => Files.Any(f => f.Selected) && !IsBusy);
         CancelCommand = new RelayCommand(() => _cts?.Cancel(), () => IsBusy);
+
+        SelectedProfile = Profiles.FirstOrDefault(p => p.Complete);
     }
 
     // ── PASO 1: entrada ─────────────────────────────────────────────────────
@@ -36,7 +39,7 @@ public sealed class PrepararEventoViewModel : ObservableObject
     public string InputFolder
     {
         get => _inputFolder;
-        set { if (Set(ref _inputFolder, value)) ScanCommand.RaiseCanExecuteChanged(); }
+        set { if (Set(ref _inputFolder, value)) ScanCommand?.RaiseCanExecuteChanged(); }
     }
 
     // ── PASO 2: destino ─────────────────────────────────────────────────────
@@ -51,7 +54,7 @@ public sealed class PrepararEventoViewModel : ObservableObject
             if (Set(ref _selectedProfile, value))
             {
                 OnPropertyChanged(nameof(ProfileWarning));
-                ScanCommand.RaiseCanExecuteChanged();
+                ScanCommand?.RaiseCanExecuteChanged();
             }
         }
     }
@@ -84,9 +87,9 @@ public sealed class PrepararEventoViewModel : ObservableObject
         {
             if (Set(ref _isBusy, value))
             {
-                ScanCommand.RaiseCanExecuteChanged();
-                ExecuteCommand.RaiseCanExecuteChanged();
-                CancelCommand.RaiseCanExecuteChanged();
+                ScanCommand?.RaiseCanExecuteChanged();
+                ExecuteCommand?.RaiseCanExecuteChanged();
+                CancelCommand?.RaiseCanExecuteChanged();
             }
         }
     }
