@@ -3,6 +3,29 @@
 Historial de versiones de Format Media Coder. Formato basado en
 [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 
+## [No publicado]
+
+### Añadido
+- 📑 **PDF → PowerPoint**: nueva herramienta. Cada página del PDF se convierte
+  en una diapositiva a página completa, con su proporción intacta (si no cuadra
+  con la diapositiva se centra con bandas, nunca se recorta ni se deforma).
+  Admite varios PDFs unidos en una sola presentación, tamaño 16:9 / 4:3 / el del
+  propio PDF, resolución hasta 4K y salida PNG o JPEG.
+- 🧱 **Escritor de `.pptx` en el Core** (`PptxPackageWriter`): genera el paquete
+  OOXML a mano, sin dependencias, volcando cada diapositiva al disco según se
+  produce (un PDF de 300 páginas en 4K no tiene que caber en memoria).
+- 📐 **`SlideLayout` / `SlideSize`**: la aritmética de encaje y de resolución de
+  rasterizado, lógica pura y cubierta por tests.
+- 🧪 21 tests nuevos (57 en total).
+
+### Cambiado
+- La app WPF pasa a `net8.0-windows10.0.19041.0` para poder usar
+  `Windows.Data.Pdf`, el motor de PDF que ya trae Windows. No añade binarios ni
+  dependencias externas.
+
+### Pendiente
+- Verificar en Windows con PDFs reales (páginas mixtas, protegidos, muy pesados).
+
 ## [2.0.0] — 2026-07-28 · Enfoque eventos
 
 Reescritura completa en **C# / .NET 8 + WPF**. La app deja de ser una caja de

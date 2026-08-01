@@ -29,6 +29,7 @@ public partial class MainWindow : Window
         MainContent.Content = name switch
         {
             _ when name.Contains("Convertir Vídeo") => new ConvertView(),
+            _ when name.Contains("PDF") => new PdfToPptxView(),
             _ when name.Contains("Analizador") => new AnalizadorView(),
             _ => new ToolPlaceholderView(name),
         };

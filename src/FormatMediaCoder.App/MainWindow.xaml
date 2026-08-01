@@ -40,6 +40,7 @@
                     <TextBlock Text="HERRAMIENTAS" Foreground="{StaticResource Text3}" FontSize="10" FontWeight="Bold" Margin="10,16,0,4" />
                     <Button Content="🔄  Convertir Vídeo" Style="{StaticResource GhostButton}" HorizontalContentAlignment="Left" Margin="0,2" Click="NavTool_Click" />
                     <Button Content="🖼  Convertir Imágenes" Style="{StaticResource GhostButton}" HorizontalContentAlignment="Left" Margin="0,2" Click="NavTool_Click" />
+                    <Button Content="📑  PDF → PowerPoint" Style="{StaticResource GhostButton}" HorizontalContentAlignment="Left" Margin="0,2" Click="NavTool_Click" />
                     <Button Content="🔍  Analizador" Style="{StaticResource GhostButton}" HorizontalContentAlignment="Left" Margin="0,2" Click="NavTool_Click" />
                     <Button Content="📦  Comprimir" Style="{StaticResource GhostButton}" HorizontalContentAlignment="Left" Margin="0,2" Click="NavTool_Click" />
                     <Button Content="✂  Edición" Style="{StaticResource GhostButton}" HorizontalContentAlignment="Left" Margin="0,2" Click="NavTool_Click" />

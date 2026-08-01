@@ -3,8 +3,11 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <!-- WPF ⇒ solo compila en Windows. El núcleo (Core) y sus tests son
-         multiplataforma y sí se compilan en cualquier sitio. -->
-    <TargetFramework>net8.0-windows</TargetFramework>
+         multiplataforma y sí se compilan en cualquier sitio.
+         La versión del SDK de Windows (10.0.19041) es la que da acceso a
+         Windows.Data.Pdf, el motor de PDF que ya trae el sistema y con el que
+         se rasterizan las páginas en «PDF → PowerPoint». No añade binarios. -->
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
