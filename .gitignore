@@ -13,10 +13,13 @@ TestResults/
 bin/ffmpeg.exe
 bin/ffprobe.exe
 
+# ── Salidas de publicación / instalador ─────────────────────────────────────
+dist/
+dist-installer/
+release/
+
 # ── Node / Electron legacy ──────────────────────────────────────────────────
 node_modules/
-dist/
-release/
 *.tsbuildinfo
 npm-debug.log*
 
