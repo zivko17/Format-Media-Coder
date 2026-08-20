@@ -1,0 +1,57 @@
+name: Publicar Release v2.0.0
+
+# Se dispara a mano (desde la pestaña Actions o por API). Compila en una máquina
+# Windows de GitHub, empaqueta la app con FFmpeg (HAP) y publica la Release.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Instalar .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Tests del núcleo
+        run: dotnet test tests/FormatMediaCoder.Core.Tests/FormatMediaCoder.Core.Tests.csproj -c Release
+
+      - name: Publicar app (self-contained, win-x64)
+        run: >
+          dotnet publish src/FormatMediaCoder.App -c Release -r win-x64
+          --self-contained true
+          -p:PublishSingleFile=false
+          -o dist
+
+      - name: Incluir FFmpeg con HAP (best effort)
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          Invoke-WebRequest "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z" -OutFile ffmpeg.7z
+          7z x ffmpeg.7z -offx -y
+          $f = Get-ChildItem ffx -Recurse -Filter ffmpeg.exe | Select-Object -First 1
+          New-Item -ItemType Directory -Force dist/bin | Out-Null
+          Copy-Item $f.FullName dist/bin/ffmpeg.exe
+          Copy-Item (Join-Path $f.DirectoryName "ffprobe.exe") dist/bin/ffprobe.exe
+          Write-Host "FFmpeg incluido desde $($f.FullName)"
+
+      - name: Empaquetar ZIP
+        shell: pwsh
+        run: Compress-Archive -Path dist/* -DestinationPath FormatMediaCoder-v2.0.0-win-x64.zip -Force
+
+      - name: Publicar Release v2.0.0
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh release create v2.0.0 FormatMediaCoder-v2.0.0-win-x64.zip
+          --title "Format Media Coder v2.0 — Enfoque eventos"
+          --notes-file .github/RELEASE_NOTES_v2.0.0.md
+          --target main
