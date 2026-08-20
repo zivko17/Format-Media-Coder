@@ -1,9 +1,12 @@
 name: Publicar Release v2.0.0
 
-# Se dispara a mano (desde la pestaña Actions o por API). Compila en una máquina
-# Windows de GitHub, empaqueta la app con FFmpeg (HAP) y publica la Release.
+# Compila en una máquina Windows de GitHub, empaqueta la app con FFmpeg (HAP) y
+# publica la Release. Se dispara a mano (Actions) o al tocar .github/release.trigger.
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - ".github/release.trigger"
 
 permissions:
   contents: write
@@ -50,8 +53,9 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: >
-          gh release create v2.0.0 FormatMediaCoder-v2.0.0-win-x64.zip
-          --title "Format Media Coder v2.0 — Enfoque eventos"
-          --notes-file .github/RELEASE_NOTES_v2.0.0.md
-          --target main
+        run: |
+          gh release delete v2.0.0 --yes --cleanup-tag 2>$null; if ($LASTEXITCODE) { }
+          gh release create v2.0.0 FormatMediaCoder-v2.0.0-win-x64.zip `
+            --title "Format Media Coder v2.0 — Enfoque eventos" `
+            --notes-file .github/RELEASE_NOTES_v2.0.0.md `
+            --target main
