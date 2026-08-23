@@ -15,10 +15,10 @@
                         <TextBox Grid.Column="0" Text="{Binding InputFile}" IsReadOnly="True" />
                         <Button Grid.Column="1" Content="Elegir archivo" Click="PickFile_Click" />
                     </Grid>
-                    <StackPanel Spacing="4">
-                        <TextBlock Text="CALIDAD (CRF) — menor = más calidad y tamaño"
-                                   Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
-                        <Slider Minimum="16" Maximum="32" Value="{Binding Crf, Mode=TwoWay}" StepFrequency="1" />
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="CALIDAD" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                        <ComboBox ItemsSource="{Binding Qualities}" SelectedItem="{Binding SelectedQuality, Mode=TwoWay}"
+                                  DisplayMemberPath="Label" HorizontalAlignment="Stretch" />
                     </StackPanel>
                     <Grid ColumnSpacing="12">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>

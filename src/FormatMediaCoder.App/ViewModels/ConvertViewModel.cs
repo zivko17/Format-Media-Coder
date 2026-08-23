@@ -21,13 +21,15 @@ public sealed class ConvertViewModel : ToolViewModelBase
     });
 
     public ObservableCollection<string> HapVariants { get; } = new(new[] { "hap_alpha", "hap_q", "hap" });
-    public ObservableCollection<string> VideoBitrates { get; } = new(new[] { "", "2000k", "4000k", "8000k", "15000k", "25000k" });
-    public ObservableCollection<string> AudioBitrates { get; } = new(new[] { "", "128k", "192k", "256k", "320k" });
+    public ObservableCollection<string> VideoBitrates { get; } = new(new[] { "Auto", "2000k", "4000k", "8000k", "15000k", "25000k" });
+    public ObservableCollection<string> AudioBitrates { get; } = new(new[] { "Auto", "128k", "192k", "256k", "320k" });
 
     public ConvertViewModel()
     {
         _selectedFormat = Formats[0];
         _selectedHapVariant = HapVariants[0];
+        _videoBitrate = "Auto";
+        _audioBitrate = "Auto";
         ConvertCommand = new RelayCommand(async () => await ConvertAsync(),
             () => !string.IsNullOrEmpty(InputFile) && !IsBusy);
     }
@@ -83,8 +85,8 @@ public sealed class ConvertViewModel : ToolViewModelBase
                 VideoCodec = SelectedFormat.VideoCodec,
                 HapVariant = ShowHapVariant ? SelectedHapVariant : null,
                 AudioCodec = SelectedFormat.AudioCodec,
-                VideoBitrate = ShowBitrates ? VideoBitrate : null,
-                AudioBitrate = AudioBitrate,
+                VideoBitrate = (ShowBitrates && VideoBitrate != "Auto") ? VideoBitrate : null,
+                AudioBitrate = AudioBitrate == "Auto" ? null : AudioBitrate,
                 NormalizeAudio = NormalizeAudio,
             });
 

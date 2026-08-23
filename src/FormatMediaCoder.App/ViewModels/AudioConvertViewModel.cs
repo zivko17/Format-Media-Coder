@@ -18,12 +18,13 @@ public sealed class AudioConvertViewModel : ToolViewModelBase
     });
 
     public ObservableCollection<string> Bitrates { get; } = new(new[] { "128k", "192k", "256k", "320k" });
-    public ObservableCollection<string> SampleRates { get; } = new(new[] { "", "44100", "48000", "96000" });
+    public ObservableCollection<string> SampleRates { get; } = new(new[] { "Auto", "44100", "48000", "96000" });
 
     public AudioConvertViewModel()
     {
         _selectedFormat = Formats[0];
         _bitrate = "192k";
+        _sampleRate = "Auto";
         ConvertCommand = new RelayCommand(async () => await RunAsync(), () => !string.IsNullOrEmpty(InputFile) && !IsBusy);
     }
 

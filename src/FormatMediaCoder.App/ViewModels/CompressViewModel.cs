@@ -12,15 +12,27 @@ public sealed class CompressViewModel : ToolViewModelBase
     public ObservableCollection<string> Resolutions { get; } = new(new[]
     { "original", "1920x1080", "1280x720", "854x480", "640x360" });
 
+    public sealed record Quality(string Label, int Crf);
+
+    public ObservableCollection<Quality> Qualities { get; } = new(new[]
+    {
+        new Quality("Máxima calidad (más grande)", 18),
+        new Quality("Alta", 20),
+        new Quality("Media (recomendado)", 23),
+        new Quality("Baja (más pequeño)", 26),
+        new Quality("Mínima (muy pequeño)", 30),
+    });
+
     public CompressViewModel()
     {
         _preset = "medium";
         _resolution = "original";
+        _selectedQuality = Qualities[2]; // Media
         CompressCommand = new RelayCommand(async () => await RunAsync(), () => !string.IsNullOrEmpty(InputFile) && !IsBusy);
     }
 
-    private double _crf = 23;
-    public double Crf { get => _crf; set => Set(ref _crf, value); }
+    private Quality _selectedQuality;
+    public Quality SelectedQuality { get => _selectedQuality; set => Set(ref _selectedQuality, value); }
 
     private string _preset;
     public string Preset { get => _preset; set => Set(ref _preset, value); }
@@ -49,7 +61,7 @@ public sealed class CompressViewModel : ToolViewModelBase
             var args = FfmpegOps.BuildCompressArgs(new FfmpegOps.CompressOptions
             {
                 Input = InputFile, Output = output,
-                Crf = (int)Crf, Preset = Preset,
+                Crf = SelectedQuality.Crf, Preset = Preset,
                 Resolution = Resolution, RemoveAudio = RemoveAudio,
                 AudioBitrate = "192k",
             });

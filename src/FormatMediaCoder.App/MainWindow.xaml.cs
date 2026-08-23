@@ -18,6 +18,9 @@ public sealed partial class MainWindow : Window
         Hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
         Title = "Format Media Coder";
 
+        // Tamaño inicial cómodo (evita que abra pequeña).
+        try { AppWindow?.Resize(new Windows.Graphics.SizeInt32(1280, 860)); } catch { }
+
         // Fondo Mica y barra de título extendida (look Fluent nativo).
         SystemBackdrop = new MicaBackdrop();
         ExtendsContentIntoTitleBar = true;
