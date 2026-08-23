@@ -14,6 +14,9 @@
     <LangVersion>latest</LangVersion>
     <Platforms>x64;arm64</Platforms>
     <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <!-- RID por defecto para que `dotnet run` sin -r funcione (self-contained
+         necesita una arquitectura). El publish del CI sigue pasando -r win-x64. -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <!-- Sin empaquetado MSIX y autónomo: se distribuye como .exe en un ZIP. -->
     <WindowsPackageType>None</WindowsPackageType>
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
