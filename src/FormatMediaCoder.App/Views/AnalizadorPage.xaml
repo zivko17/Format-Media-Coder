@@ -34,7 +34,7 @@
                                         <TextBlock Text="{Binding Label}" Foreground="{StaticResource FmcText2}" FontSize="12" />
                                     </Border>
                                     <Border Grid.Column="1" Background="{StaticResource FmcField}" Padding="10,7">
-                                        <TextBlock Text="{Binding Value}" FontSize="12" FontFamily="Consolas" />
+                                        <TextBlock Text="{Binding Value}" FontSize="12" />
                                     </Border>
                                 </Grid>
                             </DataTemplate>
