@@ -9,6 +9,7 @@
     <RootNamespace>FormatMediaCoder.App</RootNamespace>
     <AssemblyName>FormatMediaCoder</AssemblyName>
     <UseWinUI>true</UseWinUI>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <Platforms>x64;arm64</Platforms>
