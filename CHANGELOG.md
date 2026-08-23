@@ -3,6 +3,21 @@
 Historial de versiones de Format Media Coder. Formato basado en
 [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 
+## [2.1.0] — 2026-08-23 · Interfaz WinUI 3
+
+Misma app que la 2.0, con la interfaz migrada a **WinUI 3** (Fluent Design),
+sobria y técnica.
+
+### Cambiado
+- 🪟 UI nativa **WinUI 3**: `NavigationView` (Flujo / Herramientas), fondo Mica,
+  barra de título integrada y tipografía **Segoe UI Variable** del sistema.
+- ◻️ Iconos **Segoe Fluent** monocromos (sin emojis de colores).
+- 📊 Diagnóstico con **stat tiles** (Total / Listos / Recodificar / No se pueden).
+
+### Se mantiene
+- Flujo Preparar Evento, Convertir Vídeo (HAP + fix del alfa), Analizador.
+- Núcleo de lógica pura con 36 tests, intacto.
+
 ## [2.0.0] — 2026-07-28 · Enfoque eventos
 
 Reescritura completa en **C# / .NET 8 + WPF**. La app deja de ser una caja de
@@ -50,6 +65,7 @@ mira cada archivo, lo compara con el sistema de reproducción del bolo y opina.
 - Primera versión estable. Interfaz gráfica (GUI wrapper) para FFmpeg, con
   FFmpeg incluido en el instalador.
 
+[2.1.0]: https://github.com/zivko17/Format-Media-Coder/releases/tag/v2.1.0
 [2.0.0]: https://github.com/zivko17/Format-Media-Coder/releases/tag/v2.0.0
 [1.1.0]: https://github.com/zivko17/Format-Media-Coder/releases/tag/v1.1.0
 [1.0.0]: https://github.com/zivko17/Format-Media-Coder/releases/tag/V1.0.0
