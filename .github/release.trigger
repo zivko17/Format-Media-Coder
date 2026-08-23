@@ -1,1 +1,1 @@
-release v2.1.0 run 1
+release v2.2.0 run 1

@@ -1,4 +1,4 @@
-name: Publicar Release v2.1.0
+name: Publicar Release v2.2.0
 
 # Compila en una máquina Windows de GitHub, empaqueta la app WinUI 3 con FFmpeg
 # (HAP) y publica la Release. Se dispara a mano (Actions) o al tocar
@@ -57,15 +57,15 @@ jobs:
 
       - name: Empaquetar ZIP
         shell: pwsh
-        run: Compress-Archive -Path dist/* -DestinationPath FormatMediaCoder-v2.1.0-win-x64.zip -Force
+        run: Compress-Archive -Path dist/* -DestinationPath FormatMediaCoder-v2.2.0-win-x64.zip -Force
 
-      - name: Publicar Release v2.1.0
+      - name: Publicar Release v2.2.0
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release delete v2.1.0 --yes --cleanup-tag 2>$null; if ($LASTEXITCODE) { }
-          gh release create v2.1.0 FormatMediaCoder-v2.1.0-win-x64.zip `
-            --title "Format Media Coder v2.1 — Interfaz WinUI 3" `
-            --notes-file .github/RELEASE_NOTES_v2.1.0.md `
+          gh release delete v2.2.0 --yes --cleanup-tag 2>$null; if ($LASTEXITCODE) { }
+          gh release create v2.2.0 FormatMediaCoder-v2.2.0-win-x64.zip `
+            --title "Format Media Coder v2.2 — App completa (herramientas + descargas)" `
+            --notes-file .github/RELEASE_NOTES_v2.2.0.md `
             --target main

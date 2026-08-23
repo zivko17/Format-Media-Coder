@@ -3,6 +3,17 @@
 Historial de versiones de Format Media Coder. Formato basado en
 [Keep a Changelog](https://keepachangelog.com/es/1.0.0/).
 
+## [2.2.0] — 2026-08-23 · App completa
+
+Todas las herramientas funcionando y descargas con yt-dlp.
+
+### Añadido
+- 📥 **Descargar** con yt-dlp (vídeo MP4 / audio MP3 o mejor calidad).
+- 📦 Comprimir, 🖼️ Convertir Imágenes, 🎵 Convertir Audio,
+  🎚️ Extraer Audio/Frames, ✂️ Edición (recortar / rotar-escalar / unir).
+- Core: builders concat/filtros/yt-dlp (42 tests).
+- El ZIP de la release incluye FFmpeg (HAP) **y yt-dlp**.
+
 ## [2.1.0] — 2026-08-23 · Interfaz WinUI 3
 
 Misma app que la 2.0, con la interfaz migrada a **WinUI 3** (Fluent Design),
@@ -65,6 +76,7 @@ mira cada archivo, lo compara con el sistema de reproducción del bolo y opina.
 - Primera versión estable. Interfaz gráfica (GUI wrapper) para FFmpeg, con
   FFmpeg incluido en el instalador.
 
+[2.2.0]: https://github.com/zivko17/Format-Media-Coder/releases/tag/v2.2.0
 [2.1.0]: https://github.com/zivko17/Format-Media-Coder/releases/tag/v2.1.0
 [2.0.0]: https://github.com/zivko17/Format-Media-Coder/releases/tag/v2.0.0
 [1.1.0]: https://github.com/zivko17/Format-Media-Coder/releases/tag/v1.1.0
