@@ -2,17 +2,29 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <!-- WPF ⇒ solo compila en Windows. El núcleo (Core) y sus tests son
-         multiplataforma y sí se compilan en cualquier sitio. -->
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- WinUI 3 (Windows App SDK). Solo compila en Windows; se valida por CI.
+         El Core (net8.0) sigue siendo multiplataforma y con tests. -->
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>FormatMediaCoder.App</RootNamespace>
+    <AssemblyName>FormatMediaCoder</AssemblyName>
+    <UseWinUI>true</UseWinUI>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
+    <Platforms>x64;arm64</Platforms>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <!-- Sin empaquetado MSIX y autónomo: se distribuye como .exe en un ZIP. -->
+    <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <EnableMsixTooling>true</EnableMsixTooling>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>..\..\build\icon.ico</ApplicationIcon>
-    <AssemblyName>FormatMediaCoder</AssemblyName>
-    <Version>2.0.0</Version>
+    <Version>2.1.0</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260416003" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FormatMediaCoder.Core\FormatMediaCoder.Core.csproj" />

@@ -1,4 +1,6 @@
-using System.Windows.Media;
+using Microsoft.UI;
+using Microsoft.UI.Xaml.Media;
+using Windows.UI;
 using FormatMediaCoder.Core.Models;
 
 namespace FormatMediaCoder.App.ViewModels;
@@ -46,13 +48,13 @@ public sealed class FileRowViewModel : ObservableObject
         _ => "Sin juzgar",
     };
 
-    /// <summary>Color del semáforo del paso 3.</summary>
+    /// <summary>Color del semáforo del paso 3 (tonos desaturados, sobrios).</summary>
     public Brush StatusBrush => new SolidColorBrush(Report.Status switch
     {
-        ComplianceStatus.Ok => Color.FromRgb(0x3f, 0xb9, 0x50),   // verde
-        ComplianceStatus.Warn => Color.FromRgb(0xf0, 0x88, 0x3e), // ámbar
-        ComplianceStatus.Block => Color.FromRgb(0xf8, 0x51, 0x49),// rojo
-        _ => Color.FromRgb(0x48, 0x4f, 0x58),                     // gris
+        ComplianceStatus.Ok => Color.FromArgb(0xFF, 0x5f, 0x9e, 0x6b),   // verde
+        ComplianceStatus.Warn => Color.FromArgb(0xFF, 0xb8, 0x92, 0x3f), // ámbar
+        ComplianceStatus.Block => Color.FromArgb(0xFF, 0xbd, 0x64, 0x59),// rojo
+        _ => Color.FromArgb(0xFF, 0x6c, 0x6e, 0x70),                     // gris
     });
 
     /// <summary>Qué se va a hacer, en una línea.</summary>

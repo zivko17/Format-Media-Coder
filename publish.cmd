@@ -6,9 +6,9 @@ setlocal
 cd /d "%~dp0"
 
 echo.
-echo === Publicando Format Media Coder (self-contained, win-x64) ===
+echo === Publicando Format Media Coder (WinUI 3, self-contained, win-x64) ===
 dotnet publish src/FormatMediaCoder.App -c Release -r win-x64 --self-contained true ^
-  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true ^
+  -p:WindowsAppSDKSelfContained=true -p:WindowsPackageType=None ^
   -o dist
 if errorlevel 1 (
   echo.

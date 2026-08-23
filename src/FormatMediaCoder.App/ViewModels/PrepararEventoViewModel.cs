@@ -78,6 +78,13 @@ public sealed class PrepararEventoViewModel : ObservableObject
     private string _summary = "";
     public string Summary { get => _summary; private set => Set(ref _summary, value); }
 
+    // Contadores para los "stat tiles" del diagnóstico (estilo Wintoys).
+    private int _total, _ready, _recode, _blocked;
+    public int TotalCount { get => _total; private set => Set(ref _total, value); }
+    public int ReadyCount { get => _ready; private set => Set(ref _ready, value); }
+    public int RecodeCount { get => _recode; private set => Set(ref _recode, value); }
+    public int BlockedCount { get => _blocked; private set => Set(ref _blocked, value); }
+
     // ── PASO 4: ejecución ───────────────────────────────────────────────────
     private bool _isBusy;
     public bool IsBusy
@@ -139,7 +146,8 @@ public sealed class PrepararEventoViewModel : ObservableObject
                 }
             }
 
-            // Resumen del paso 3 (brief §6.1).
+            // Resumen y contadores del paso 3 (brief §6.1).
+            TotalCount = Files.Count; ReadyCount = ready; RecodeCount = recode; BlockedCount = blocked;
             Summary = $"{Files.Count} archivos · {ready} listos · {recode} hay que recodificar · {blocked} no se pueden arreglar solos";
             StatusLine = "";
             ExecuteCommand.RaiseCanExecuteChanged();

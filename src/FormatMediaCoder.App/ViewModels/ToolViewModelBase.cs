@@ -1,11 +1,12 @@
 using FormatMediaCoder.App.Services;
-using Microsoft.Win32;
 
 namespace FormatMediaCoder.App.ViewModels;
 
 /// <summary>
-/// Plumbing compartido por las herramientas del trabajo suelto: archivo de
-/// entrada, estado de ocupado, progreso, línea de estado y cancelación.
+/// Plumbing compartido por las herramientas: archivo de entrada, estado de
+/// ocupado, progreso, línea de estado y cancelación. En WinUI la elección de
+/// archivo se hace en la página (necesita el handle de ventana), y aquí solo se
+/// recibe la ruta ya elegida vía <see cref="InputFile"/>.
 /// </summary>
 public abstract class ToolViewModelBase : ObservableObject
 {
@@ -15,7 +16,6 @@ public abstract class ToolViewModelBase : ObservableObject
     protected ToolViewModelBase()
     {
         Ffmpeg.Progress += (pct, tm) => { ProgressPercent = pct; ProgressTimemark = tm; };
-        PickCommand = new RelayCommand(PickFile);
         CancelCommand = new RelayCommand(() => Cts?.Cancel(), () => IsBusy);
     }
 
@@ -53,18 +53,7 @@ public abstract class ToolViewModelBase : ObservableObject
     private string _statusLine = "";
     public string StatusLine { get => _statusLine; protected set => Set(ref _statusLine, value); }
 
-    public RelayCommand PickCommand { get; }
     public RelayCommand CancelCommand { get; }
-
-    /// <summary>Filtro del diálogo de archivo. Se sobreescribe por herramienta.</summary>
-    protected virtual string FileFilter =>
-        "Multimedia|*.mp4;*.mov;*.mkv;*.avi;*.webm;*.wmv;*.m4v;*.mpg;*.mpeg;*.flv;*.gif;*.mp3;*.wav;*.aac;*.flac;*.ogg;*.png;*.jpg;*.jpeg|Todos|*.*";
-
-    private void PickFile()
-    {
-        var dlg = new OpenFileDialog { Filter = FileFilter, Title = "Elige un archivo" };
-        if (dlg.ShowDialog() == true) InputFile = dlg.FileName;
-    }
 
     /// <summary>Nombre de salida junto al de entrada con un sufijo y extensión dados.</summary>
     protected static string AutoOutput(string input, string suffix, string ext)

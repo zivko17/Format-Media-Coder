@@ -1,0 +1,29 @@
+name: CI
+
+# Verifica en cada push que el núcleo pasa los tests y que la app WinUI 3
+# compila/publica en Windows. No publica nada (eso es cosa de release.yml).
+on:
+  push:
+    branches: ["**"]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Tests del núcleo
+        run: dotnet test tests/FormatMediaCoder.Core.Tests/FormatMediaCoder.Core.Tests.csproj -c Release
+
+      - name: Publicar app WinUI 3 (verificación de build)
+        run: >
+          dotnet publish src/FormatMediaCoder.App -c Release -r win-x64
+          --self-contained true
+          -p:WindowsAppSDKSelfContained=true
+          -p:WindowsPackageType=None
+          -o dist

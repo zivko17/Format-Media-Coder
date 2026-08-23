@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="FormatMediaCoder.App.Views.PrepararEventoPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer Padding="28,8,28,28">
+        <StackPanel MaxWidth="860" HorizontalAlignment="Left" Spacing="0">
+
+            <TextBlock Text="Preparar Evento" FontSize="26" FontWeight="SemiBold" Margin="0,8,0,2" />
+            <TextBlock Text="Recibe el material del cliente como llega y déjalo listo para el servidor del bolo."
+                       Foreground="{StaticResource FmcText2}" FontSize="13" Margin="0,0,0,18" TextWrapping="Wrap" />
+
+            <!-- PASO 1 · ENTRADA -->
+            <Border Style="{StaticResource Card}" Margin="0,0,0,12">
+                <StackPanel Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <FontIcon Glyph="&#xE8B7;" FontSize="16" Foreground="{StaticResource FmcText3}" VerticalAlignment="Center" />
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="PASO 1" FontSize="11" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                            <LineBreak /><Run Text="Entrada" Foreground="{StaticResource FmcText2}" />
+                        </TextBlock>
+                    </StackPanel>
+                    <TextBlock Text="Suelta una carpeta entera (acepta subcarpetas). Es como llega el material del cliente."
+                               Foreground="{StaticResource FmcText3}" FontSize="12" TextWrapping="Wrap" />
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding InputFolder}" IsReadOnly="True" />
+                        <Button Grid.Column="1" Content="Elegir carpeta" Click="PickFolder_Click" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- PASO 2 · DESTINO -->
+            <Border Style="{StaticResource Card}" Margin="0,0,0,4">
+                <StackPanel Spacing="10">
+                    <TextBlock>
+                        <Run Text="PASO 2" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource FmcText3}" />
+                        <Run Text="  Destino" Foreground="{StaticResource FmcText2}" />
+                    </TextBlock>
+                    <ComboBox ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfile, Mode=TwoWay}"
+                              DisplayMemberPath="Name" HorizontalAlignment="Stretch" />
+                    <TextBlock Text="{Binding ProfileWarning}" Foreground="{StaticResource FmcAccent}" FontSize="12"
+                               TextWrapping="Wrap"
+                               Visibility="{Binding ProfileWarning, Converter={StaticResource EmptyToCollapsed}}" />
+                    <Button Content="Analizar material" Style="{StaticResource AccentButton}"
+                            HorizontalAlignment="Left" Command="{Binding ScanCommand}" />
+                </StackPanel>
+            </Border>
+
+            <!-- PASO 3 · DIAGNÓSTICO -->
+            <TextBlock Style="{StaticResource SectionLabel}">
+                <Run Text="PASO 3" Foreground="{StaticResource FmcText3}" />  DIAGNÓSTICO
+            </TextBlock>
+
+            <Grid ColumnSpacing="12" Margin="0,0,0,14"
+                  Visibility="{Binding Summary, Converter={StaticResource EmptyToCollapsed}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" /><ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" /><ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Style="{StaticResource Card}">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Total" Foreground="{StaticResource FmcText2}" FontSize="12" />
+                        <TextBlock Text="{Binding TotalCount}" FontSize="30" FontWeight="SemiBold" />
+                        <TextBlock Text="archivos" Foreground="{StaticResource FmcText3}" FontSize="12" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource Card}">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Listos" Foreground="{StaticResource FmcText2}" FontSize="12" />
+                        <TextBlock Text="{Binding ReadyCount}" FontSize="30" FontWeight="SemiBold" Foreground="{StaticResource FmcGreen}" />
+                        <TextBlock Text="se copian tal cual" Foreground="{StaticResource FmcText3}" FontSize="12" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource Card}">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Recodificar" Foreground="{StaticResource FmcText2}" FontSize="12" />
+                        <TextBlock Text="{Binding RecodeCount}" FontSize="30" FontWeight="SemiBold" Foreground="{StaticResource FmcAmber}" />
+                        <TextBlock Text="hay que arreglarlos" Foreground="{StaticResource FmcText3}" FontSize="12" />
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="3" Style="{StaticResource Card}">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="No se pueden" Foreground="{StaticResource FmcText2}" FontSize="12" />
+                        <TextBlock Text="{Binding BlockedCount}" FontSize="30" FontWeight="SemiBold" Foreground="{StaticResource FmcRed}" />
+                        <TextBlock Text="necesitan decisión" Foreground="{StaticResource FmcText3}" FontSize="12" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border BorderBrush="{StaticResource FmcStroke}" BorderThickness="1" CornerRadius="8"
+                    Visibility="{Binding Summary, Converter={StaticResource EmptyToCollapsed}}">
+                <ItemsControl ItemsSource="{Binding Files}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="16,11" ColumnSpacing="14" BorderBrush="{StaticResource FmcStroke}" BorderThickness="0,0,0,1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="72" />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox Grid.Column="0" IsChecked="{Binding Selected, Mode=TwoWay}" IsEnabled="{Binding CanSelect}" MinWidth="0" />
+                                <Rectangle Grid.Column="1" Width="8" Height="8" RadiusX="2" RadiusY="2" Fill="{Binding StatusBrush}" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="2" Text="{Binding FileName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontSize="13" />
+                                <TextBlock Grid.Column="3" Text="{Binding ActionSummary}" Foreground="{StaticResource FmcText2}" FontSize="12" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="4" Text="{Binding StatusText}" Foreground="{Binding StatusBrush}" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+
+            <!-- PASO 4 · PLAN Y EJECUCIÓN -->
+            <TextBlock Style="{StaticResource SectionLabel}">
+                <Run Text="PASO 4" Foreground="{StaticResource FmcText3}" />  PLAN Y EJECUCIÓN
+            </TextBlock>
+            <Border Style="{StaticResource Card}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="Desmarca arriba lo que no quieras preparar. La salida va a la subcarpeta _preparado, sin sobrescribir nada."
+                               Foreground="{StaticResource FmcText3}" FontSize="12" TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Content="Preparar seleccionados" Style="{StaticResource AccentButton}" Command="{Binding ExecuteCommand}" />
+                        <Button Content="Cancelar" Command="{Binding CancelCommand}" />
+                    </StackPanel>
+                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding ProgressPercent}" Foreground="{StaticResource FmcAccent}" />
+                    <TextBlock Text="{Binding StatusLine}" Foreground="{StaticResource FmcText2}" FontSize="12" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

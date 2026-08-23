@@ -26,11 +26,12 @@ jobs:
       - name: Tests del núcleo
         run: dotnet test tests/FormatMediaCoder.Core.Tests/FormatMediaCoder.Core.Tests.csproj -c Release
 
-      - name: Publicar app (self-contained, win-x64)
+      - name: Publicar app WinUI 3 (self-contained, win-x64)
         run: >
           dotnet publish src/FormatMediaCoder.App -c Release -r win-x64
           --self-contained true
-          -p:PublishSingleFile=false
+          -p:WindowsAppSDKSelfContained=true
+          -p:WindowsPackageType=None
           -o dist
 
       - name: Incluir FFmpeg con HAP (best effort)

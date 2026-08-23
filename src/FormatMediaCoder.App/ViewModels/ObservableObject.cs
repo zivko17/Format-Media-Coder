@@ -1,16 +1,30 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Microsoft.UI.Dispatching;
 
 namespace FormatMediaCoder.App.ViewModels;
 
-/// <summary>Base MVVM mínima: notificación de cambios de propiedad.</summary>
+/// <summary>
+/// Base MVVM. En WinUI 3 las notificaciones que llegan de hilos de fondo (p.ej.
+/// el progreso de FFmpeg) deben marshalarse al hilo de UI o la vinculación
+/// revienta; por eso se captura el DispatcherQueue del hilo de UI al construir.
+/// </summary>
 public abstract class ObservableObject : INotifyPropertyChanged
 {
+    private readonly DispatcherQueue? _dispatcher = DispatcherQueue.GetForCurrentThread();
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected void OnPropertyChanged([CallerMemberName] string? name = null) =>
+    protected void OnPropertyChanged([CallerMemberName] string? name = null)
+    {
+        if (_dispatcher is not null && !_dispatcher.HasThreadAccess)
+        {
+            _dispatcher.TryEnqueue(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)));
+            return;
+        }
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
 
     protected bool Set<T>(ref T field, T value, [CallerMemberName] string? name = null)
     {
@@ -21,7 +35,7 @@ public abstract class ObservableObject : INotifyPropertyChanged
     }
 }
 
-/// <summary>Comando de relé sencillo para enlazar acciones desde XAML.</summary>
+/// <summary>Comando de relé sencillo.</summary>
 public sealed class RelayCommand : ICommand
 {
     private readonly Action<object?> _execute;

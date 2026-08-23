@@ -1,36 +1,44 @@
-using System.Windows;
-using System.Windows.Controls;
+using System.Linq;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using FormatMediaCoder.App.Views;
 
 namespace FormatMediaCoder.App;
 
-public partial class MainWindow : Window
+public sealed partial class MainWindow : Window
 {
-    private readonly PrepararEventoView _prepararView = new();
+    /// <summary>Handle de la ventana, que necesitan los file pickers de WinUI.</summary>
+    public static nint Hwnd { get; private set; }
 
     public MainWindow()
     {
         InitializeComponent();
-        // Preparar Evento es la pantalla que se abre al arrancar (brief §6.1).
-        MainContent.Content = _prepararView;
+
+        Hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+        Title = "Format Media Coder";
+
+        // Fondo Mica y barra de título extendida (look Fluent nativo).
+        SystemBackdrop = new MicaBackdrop();
+        ExtendsContentIntoTitleBar = true;
+        SetTitleBar(AppTitleBar);
+
+        // Abrir en Preparar Evento.
+        Nav.SelectedItem = Nav.MenuItems.OfType<NavigationViewItem>().FirstOrDefault();
     }
 
-    private void NavPreparar_Click(object sender, RoutedEventArgs e)
+    private void Nav_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
-        MainContent.Content = _prepararView;
-    }
+        if (args.SelectedItem is not NavigationViewItem item) return;
+        var tag = item.Tag as string ?? "";
 
-    private void NavTool_Click(object sender, RoutedEventArgs e)
-    {
-        // Las herramientas del original se reagrupan aquí (brief §6.2). Se van
-        // portando desde la versión anterior; las ya portadas abren su vista real,
-        // el resto muestran de momento su sitio en el nuevo menú.
-        var name = (sender as Button)?.Content?.ToString() ?? "Herramienta";
-        MainContent.Content = name switch
+        ContentHost.Content = tag switch
         {
-            _ when name.Contains("Convertir Vídeo") => new ConvertView(),
-            _ when name.Contains("Analizador") => new AnalizadorView(),
-            _ => new ToolPlaceholderView(name),
+            "prep" => new PrepararEventoPage(),
+            "convert" => new ConvertPage(),
+            "analizador" => new AnalizadorPage(),
+            _ when tag.StartsWith("tool:") => new ToolPlaceholderPage(tag[5..]),
+            _ => ContentHost.Content,
         };
     }
 }

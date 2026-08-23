@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="FormatMediaCoder.App.Views.ConvertPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer Padding="28,8,28,28">
+        <StackPanel MaxWidth="720" HorizontalAlignment="Left" Spacing="0">
+            <TextBlock Text="Convertir Vídeo" FontSize="26" FontWeight="SemiBold" Margin="0,8,0,2" />
+            <TextBlock Text="Cambia el contenedor o los codecs. Incluye HAP con su variante (conserva el alfa)."
+                       Foreground="{StaticResource FmcText2}" FontSize="13" Margin="0,0,0,18" TextWrapping="Wrap" />
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel Spacing="14">
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding InputFile}" IsReadOnly="True" />
+                        <Button Grid.Column="1" Content="Elegir archivo" Click="PickFile_Click" />
+                    </Grid>
+
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="FORMATO DE SALIDA" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                        <ComboBox ItemsSource="{Binding Formats}" SelectedItem="{Binding SelectedFormat, Mode=TwoWay}"
+                                  DisplayMemberPath="Label" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+
+                    <StackPanel Spacing="6" Visibility="{Binding ShowHapVariant, Converter={StaticResource BoolToVis}}">
+                        <TextBlock Text="VARIANTE HAP" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                        <ComboBox ItemsSource="{Binding HapVariants}" SelectedItem="{Binding SelectedHapVariant, Mode=TwoWay}"
+                                  HorizontalAlignment="Stretch" />
+                        <TextBlock Text="hap_alpha conserva transparencia · hap_q máxima calidad sin alfa · hap básico"
+                                   Foreground="{StaticResource FmcText3}" FontSize="11" TextWrapping="Wrap" />
+                    </StackPanel>
+
+                    <Grid ColumnSpacing="12" Visibility="{Binding ShowBitrates, Converter={StaticResource BoolToVis}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" /><ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Spacing="6">
+                            <TextBlock Text="BITRATE VÍDEO" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                            <ComboBox ItemsSource="{Binding VideoBitrates}" SelectedItem="{Binding VideoBitrate, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="6">
+                            <TextBlock Text="BITRATE AUDIO" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                            <ComboBox ItemsSource="{Binding AudioBitrates}" SelectedItem="{Binding AudioBitrate, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                        </StackPanel>
+                    </Grid>
+
+                    <CheckBox Content="Normalizar audio (EBU R128 / -23 LUFS)" IsChecked="{Binding NormalizeAudio, Mode=TwoWay}" />
+
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Content="Convertir" Style="{StaticResource AccentButton}" Command="{Binding ConvertCommand}" />
+                        <Button Content="Cancelar" Command="{Binding CancelCommand}" />
+                    </StackPanel>
+                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding ProgressPercent}" Foreground="{StaticResource FmcAccent}" />
+                    <TextBlock Text="{Binding StatusLine}" Foreground="{StaticResource FmcText2}" FontSize="12" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
