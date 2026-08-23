@@ -17,7 +17,7 @@
                     <StackPanel Orientation="Horizontal" Spacing="12">
                         <FontIcon Glyph="&#xE8B7;" FontSize="16" Foreground="{StaticResource FmcText3}" VerticalAlignment="Center" />
                         <TextBlock VerticalAlignment="Center">
-                            <Run Text="PASO 1" FontSize="11" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                            <Run Text="PASO 1" FontSize="11" FontWeight="SemiBold" Foreground="{StaticResource FmcText3}" />
                             <LineBreak /><Run Text="Entrada" Foreground="{StaticResource FmcText2}" />
                         </TextBlock>
                     </StackPanel>

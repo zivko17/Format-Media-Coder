@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="FormatMediaCoder.App.Views.ExtractPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer Padding="28,8,28,28">
+        <StackPanel MaxWidth="640" HorizontalAlignment="Left">
+            <TextBlock Text="Extraer Audio / Frames" FontSize="26" FontWeight="SemiBold" Margin="0,8,0,2" />
+            <TextBlock Text="Saca la pista de audio, o exporta fotogramas como imágenes."
+                       Foreground="{StaticResource FmcText2}" FontSize="13" Margin="0,0,0,18" TextWrapping="Wrap" />
+            <Border Style="{StaticResource Card}">
+                <StackPanel Spacing="14">
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding InputFile}" IsReadOnly="True" />
+                        <Button Grid.Column="1" Content="Elegir vídeo" Click="PickFile_Click" />
+                    </Grid>
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="MODO" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                        <ComboBox ItemsSource="{Binding Modes}" SelectedItem="{Binding Mode, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+
+                    <StackPanel Spacing="6" Visibility="{Binding IsAudio, Converter={StaticResource BoolToVis}}">
+                        <TextBlock Text="FORMATO DE AUDIO" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                        <ComboBox ItemsSource="{Binding AudioFormats}" SelectedItem="{Binding AudioFormat, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+
+                    <StackPanel Spacing="6" Visibility="{Binding IsFrames, Converter={StaticResource BoolToVis}}">
+                        <Grid ColumnSpacing="12">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Spacing="6">
+                                <TextBlock Text="FRAMES POR SEGUNDO" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                                <NumberBox Value="{Binding Fps, Mode=TwoWay}" Minimum="0.1" Maximum="60" SmallChange="1" SpinButtonPlacementMode="Compact" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Spacing="6">
+                                <TextBlock Text="FORMATO" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                                <ComboBox ItemsSource="{Binding FrameFormats}" SelectedItem="{Binding FrameFormat, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Content="Extraer" Style="{StaticResource AccentButton}" Command="{Binding ExtractCommand}" />
+                        <Button Content="Cancelar" Command="{Binding CancelCommand}" />
+                    </StackPanel>
+                    <TextBlock Text="{Binding StatusLine}" Foreground="{StaticResource FmcText2}" FontSize="12" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

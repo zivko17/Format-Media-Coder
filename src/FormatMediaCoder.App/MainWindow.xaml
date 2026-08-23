@@ -30,26 +30,29 @@
                 </NavigationViewItem>
 
                 <NavigationViewItemHeader Content="Herramientas" />
+                <NavigationViewItem Content="Descargar" Tag="descargar">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE896;" /></NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem Content="Convertir Vídeo" Tag="convert">
                     <NavigationViewItem.Icon><FontIcon Glyph="&#xE714;" /></NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Convertir Imágenes" Tag="tool:Convertir Imágenes">
+                <NavigationViewItem Content="Convertir Imágenes" Tag="imagenes">
                     <NavigationViewItem.Icon><FontIcon Glyph="&#xE91B;" /></NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem Content="Analizador" Tag="analizador">
                     <NavigationViewItem.Icon><FontIcon Glyph="&#xE721;" /></NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Comprimir" Tag="tool:Comprimir">
+                <NavigationViewItem Content="Comprimir" Tag="comprimir">
                     <NavigationViewItem.Icon><FontIcon Glyph="&#xE74E;" /></NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Edición" Tag="tool:Edición">
+                <NavigationViewItem Content="Edición" Tag="edicion">
                     <NavigationViewItem.Icon><FontIcon Glyph="&#xE70F;" /></NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Convertir Audio" Tag="tool:Convertir Audio">
+                <NavigationViewItem Content="Convertir Audio" Tag="audio">
                     <NavigationViewItem.Icon><FontIcon Glyph="&#xE8D6;" /></NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Extraer Audio" Tag="tool:Extraer Audio">
-                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE896;" /></NavigationViewItem.Icon>
+                <NavigationViewItem Content="Extraer Audio" Tag="extraer">
+                    <NavigationViewItem.Icon><FontIcon Glyph="&#xE958;" /></NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
 

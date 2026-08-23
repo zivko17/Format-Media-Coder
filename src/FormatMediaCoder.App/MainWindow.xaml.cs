@@ -35,8 +35,14 @@ public sealed partial class MainWindow : Window
         ContentHost.Content = tag switch
         {
             "prep" => new PrepararEventoPage(),
+            "descargar" => new DescargarPage(),
             "convert" => new ConvertPage(),
+            "imagenes" => new ImageConvertPage(),
             "analizador" => new AnalizadorPage(),
+            "comprimir" => new CompressPage(),
+            "edicion" => new EdicionPage(),
+            "audio" => new AudioConvertPage(),
+            "extraer" => new ExtractPage(),
             _ when tag.StartsWith("tool:") => new ToolPlaceholderPage(tag[5..]),
             _ => ContentHost.Content,
         };

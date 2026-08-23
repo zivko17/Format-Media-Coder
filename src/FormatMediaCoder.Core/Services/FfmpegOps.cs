@@ -195,6 +195,39 @@ public static class FfmpegOps
         };
     }
 
+    // ── Unir (concat demuxer, sin recodificar) ──────────────────────────────
+    // El servicio escribe el fichero de lista (una línea "file '<ruta>'" por clip);
+    // aquí solo se construyen los argumentos.
+    public static List<string> BuildConcatArgs(string listPath, string output)
+    {
+        return new List<string>
+        {
+            "-y", "-f", "concat", "-safe", "0", "-i", listPath, "-c", "copy", output,
+        };
+    }
+
+    /// <summary>Línea del fichero de lista del concat demuxer, con escape de comillas.</summary>
+    public static string ConcatListLine(string filePath) =>
+        "file '" + filePath.Replace("'", "'\\''") + "'";
+
+    // ── Filtros (escala / rotación) ─────────────────────────────────────────
+    public static List<string> BuildFiltersArgs(string input, string output, Models.Resolution? scale, string? rotation)
+    {
+        var args = new List<string> { "-y", "-i", input };
+        var vf = new List<string>();
+        if (scale is Models.Resolution r) vf.Add($"scale={r.Width}:{r.Height}");
+        switch (rotation)
+        {
+            case "cw": vf.Add("transpose=1"); break;
+            case "ccw": vf.Add("transpose=2"); break;
+            case "180": vf.Add("hflip"); vf.Add("vflip"); break;
+        }
+        if (vf.Count > 0) { args.Add("-vf"); args.Add(string.Join(",", vf)); }
+        args.Add("-c:a"); args.Add("copy");
+        args.Add(output);
+        return args;
+    }
+
     public static double TimeToSeconds(string t)
     {
         if (string.IsNullOrEmpty(t)) return 0;

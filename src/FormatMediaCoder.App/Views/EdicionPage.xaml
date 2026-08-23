@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="FormatMediaCoder.App.Views.EdicionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer Padding="28,8,28,28">
+        <StackPanel MaxWidth="720" HorizontalAlignment="Left" Spacing="12">
+            <StackPanel>
+                <TextBlock Text="Edición" FontSize="26" FontWeight="SemiBold" Margin="0,8,0,2" />
+                <TextBlock Text="Recortar por tiempo, rotar/escalar y unir varios clips."
+                           Foreground="{StaticResource FmcText2}" FontSize="13" TextWrapping="Wrap" />
+            </StackPanel>
+
+            <!-- Archivo (para recortar y rotar/escalar) -->
+            <Border Style="{StaticResource Card}">
+                <Grid ColumnSpacing="8">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Text="{Binding InputFile}" IsReadOnly="True" PlaceholderText="Archivo para recortar / rotar / escalar" />
+                    <Button Grid.Column="1" Content="Elegir archivo" Click="PickFile_Click" />
+                </Grid>
+            </Border>
+
+            <!-- Recortar -->
+            <Border Style="{StaticResource Card}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="RECORTAR" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Spacing="6">
+                            <TextBlock Text="Inicio (HH:MM:SS)" Foreground="{StaticResource FmcText3}" FontSize="11" />
+                            <TextBox Text="{Binding TrimStart, Mode=TwoWay}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="6">
+                            <TextBlock Text="Fin (HH:MM:SS)" Foreground="{StaticResource FmcText3}" FontSize="11" />
+                            <TextBox Text="{Binding TrimEnd, Mode=TwoWay}" />
+                        </StackPanel>
+                    </Grid>
+                    <Button Content="Recortar" Style="{StaticResource AccentButton}" HorizontalAlignment="Left" Command="{Binding TrimCommand}" />
+                </StackPanel>
+            </Border>
+
+            <!-- Rotar / Escalar -->
+            <Border Style="{StaticResource Card}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="ROTAR / ESCALAR" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Spacing="6">
+                            <TextBlock Text="Rotación" Foreground="{StaticResource FmcText3}" FontSize="11" />
+                            <ComboBox ItemsSource="{Binding Rotations}" SelectedItem="{Binding Rotation, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="6">
+                            <TextBlock Text="Escala" Foreground="{StaticResource FmcText3}" FontSize="11" />
+                            <ComboBox ItemsSource="{Binding Scales}" SelectedItem="{Binding Scale, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                        </StackPanel>
+                    </Grid>
+                    <Button Content="Aplicar" Style="{StaticResource AccentButton}" HorizontalAlignment="Left" Command="{Binding FiltersCommand}" />
+                </StackPanel>
+            </Border>
+
+            <!-- Unir -->
+            <Border Style="{StaticResource Card}">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="UNIR VARIOS CLIPS" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                    <TextBlock Text="Deben compartir codec y resolución (se unen sin recodificar)."
+                               Foreground="{StaticResource FmcText3}" FontSize="11" TextWrapping="Wrap" />
+                    <Button Content="Añadir clips…" Click="AddMerge_Click" HorizontalAlignment="Left" />
+                    <ListView ItemsSource="{Binding MergeFiles}" MaxHeight="150" SelectionMode="None" />
+                    <Button Content="Unir" Style="{StaticResource AccentButton}" HorizontalAlignment="Left" Command="{Binding MergeCommand}" />
+                </StackPanel>
+            </Border>
+
+            <ProgressBar Minimum="0" Maximum="100" Value="{Binding ProgressPercent}" Foreground="{StaticResource FmcAccent}" />
+            <TextBlock Text="{Binding StatusLine}" Foreground="{StaticResource FmcText2}" FontSize="12" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

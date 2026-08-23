@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="FormatMediaCoder.App.Views.CompressPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer Padding="28,8,28,28">
+        <StackPanel MaxWidth="720" HorizontalAlignment="Left">
+            <TextBlock Text="Comprimir" FontSize="26" FontWeight="SemiBold" Margin="0,8,0,2" />
+            <TextBlock Text="Reduce el tamaño con H.264 (CRF). Más CRF = más pequeño y menos calidad."
+                       Foreground="{StaticResource FmcText2}" FontSize="13" Margin="0,0,0,18" TextWrapping="Wrap" />
+            <Border Style="{StaticResource Card}">
+                <StackPanel Spacing="14">
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding InputFile}" IsReadOnly="True" />
+                        <Button Grid.Column="1" Content="Elegir archivo" Click="PickFile_Click" />
+                    </Grid>
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="CALIDAD (CRF) — menor = más calidad y tamaño"
+                                   Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                        <Slider Minimum="16" Maximum="32" Value="{Binding Crf, Mode=TwoWay}" StepFrequency="1" />
+                    </StackPanel>
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Spacing="6">
+                            <TextBlock Text="PRESET" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                            <ComboBox ItemsSource="{Binding Presets}" SelectedItem="{Binding Preset, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Spacing="6">
+                            <TextBlock Text="RESOLUCIÓN" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                            <ComboBox ItemsSource="{Binding Resolutions}" SelectedItem="{Binding Resolution, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                        </StackPanel>
+                    </Grid>
+                    <CheckBox Content="Quitar audio" IsChecked="{Binding RemoveAudio, Mode=TwoWay}" />
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Content="Comprimir" Style="{StaticResource AccentButton}" Command="{Binding CompressCommand}" />
+                        <Button Content="Cancelar" Command="{Binding CancelCommand}" />
+                    </StackPanel>
+                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding ProgressPercent}" Foreground="{StaticResource FmcAccent}" />
+                    <TextBlock Text="{Binding StatusLine}" Foreground="{StaticResource FmcText2}" FontSize="12" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

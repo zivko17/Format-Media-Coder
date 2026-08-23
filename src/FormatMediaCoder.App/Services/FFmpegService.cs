@@ -96,6 +96,27 @@ public sealed class FFmpegService
         }
     }
 
+    /// <summary>Une varios clips (concat demuxer). Escribe la lista temporal y la limpia.</summary>
+    public async Task MergeAsync(IReadOnlyList<string> inputs, string outputPath, CancellationToken ct = default)
+    {
+        var listPath = Path.Combine(Path.GetTempPath(), $"fmc_concat_{Guid.NewGuid():N}.txt");
+        await File.WriteAllLinesAsync(listPath, inputs.Select(FfmpegOps.ConcatListLine), ct);
+        try
+        {
+            var args = FfmpegOps.BuildConcatArgs(listPath, outputPath);
+            var (exit, _, stderr) = await RunCaptureAsync(_ffmpeg, args, ct, isEncode: true, 0);
+            if (exit != 0)
+            {
+                TryDelete(outputPath);
+                throw new InvalidOperationException(ExtractRealError(stderr));
+            }
+        }
+        finally
+        {
+            TryDelete(listPath);
+        }
+    }
+
     public void Cancel()
     {
         try { _active?.Kill(entireProcessTree: true); } catch { /* ya terminó */ }

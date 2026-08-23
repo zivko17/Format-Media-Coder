@@ -47,6 +47,14 @@ jobs:
           Copy-Item (Join-Path $f.DirectoryName "ffprobe.exe") dist/bin/ffprobe.exe
           Write-Host "FFmpeg incluido desde $($f.FullName)"
 
+      - name: Incluir yt-dlp (best effort)
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist/bin | Out-Null
+          Invoke-WebRequest "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" -OutFile dist/bin/yt-dlp.exe
+          Write-Host "yt-dlp incluido"
+
       - name: Empaquetar ZIP
         shell: pwsh
         run: Compress-Archive -Path dist/* -DestinationPath FormatMediaCoder-v2.1.0-win-x64.zip -Force

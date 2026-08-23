@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="FormatMediaCoder.App.Views.DescargarPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer Padding="28,8,28,28">
+        <StackPanel MaxWidth="720" HorizontalAlignment="Left">
+            <TextBlock Text="Descargar" FontSize="26" FontWeight="SemiBold" Margin="0,8,0,2" />
+            <TextBlock Text="Descarga vídeo o audio de una URL con yt-dlp. FFmpeg (HAP) va incluido."
+                       Foreground="{StaticResource FmcText2}" FontSize="13" Margin="0,0,0,18" TextWrapping="Wrap" />
+            <Border Style="{StaticResource Card}">
+                <StackPanel Spacing="14">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="URL" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                        <TextBox Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="https://…" />
+                    </StackPanel>
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="QUÉ DESCARGAR" Foreground="{StaticResource FmcText3}" FontSize="11" FontWeight="SemiBold" />
+                        <ComboBox ItemsSource="{Binding Kinds}" SelectedItem="{Binding SelectedKind, Mode=TwoWay}" DisplayMemberPath="Label" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                    <Grid ColumnSpacing="8">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding OutputDir}" IsReadOnly="True" />
+                        <Button Grid.Column="1" Content="Carpeta destino" Click="PickFolder_Click" />
+                    </Grid>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Content="Descargar" Style="{StaticResource AccentButton}" Command="{Binding DownloadCommand}" />
+                        <Button Content="Cancelar" Command="{Binding CancelCommand}" />
+                    </StackPanel>
+                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding ProgressPercent}" Foreground="{StaticResource FmcAccent}" />
+                    <TextBlock Text="{Binding StatusLine}" Foreground="{StaticResource FmcText2}" FontSize="12" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
